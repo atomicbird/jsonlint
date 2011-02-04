@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'jsonlint' target in the 'jsonlint' project.
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
