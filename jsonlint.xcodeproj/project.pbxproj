@@ -40,6 +40,7 @@
 		32A70AAB03705E1F00C91783 /* jsonlint_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = jsonlint_Prefix.pch; sourceTree = "<group>"; };
 		8DD76FA10486AA7600D96B5E /* jsonlint */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = jsonlint; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859EA3029092ED04C91782 /* jsonlint.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = jsonlint.1; sourceTree = "<group>"; };
+		EE09A8B612FCB5AD0035665D /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		EE3E23D612FCB06600AD9B6A /* LICENSE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENSE.txt; sourceTree = "<group>"; };
 		EE3E23D712FCB06600AD9B6A /* README.markdown */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.markdown; sourceTree = "<group>"; };
 		EE3E23D912FCB06600AD9B6A /* CDataScanner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CDataScanner.h; sourceTree = "<group>"; };
@@ -116,6 +117,7 @@
 			isa = PBXGroup;
 			children = (
 				C6859EA3029092ED04C91782 /* jsonlint.1 */,
+				EE09A8B612FCB5AD0035665D /* README.markdown */,
 			);
 			name = Documentation;
 			sourceTree = "<group>";
