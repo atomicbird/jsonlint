@@ -6,6 +6,12 @@ jsonlint is a command-line tool for Mac OS X that can be used to parse, validate
 
 It makes use of a slightly modified version of Jonathan Wight's TouchJSON for JSON processing: <https://github.com/atomicbird/TouchJSON>.
 
+## Getting jsonlint
+
+Since jsonlint includes TouchJSON as a git submodule, you'll need to clone recursively to get all the necessary code:
+
+	git clone --recursive git://github.com/atomicbird/jsonlint.git
+	
 ## License
 
 jsonlint is licensed under the MIT license.
