@@ -6,6 +6,10 @@ jsonlint is a command-line tool for Mac OS X that can be used to parse, validate
 
 It makes use of a slightly modified version of Jonathan Wight's TouchJSON for JSON processing: <https://github.com/atomicbird/TouchJSON>.
 
+## License
+
+jsonlint is licensed under the MIT license.
+
 ## Usage
 
 jsonlint reads from standard input and writes to standard output. Its simplest usage echoes the incoming JSON to stdout if the JSON is valid. If not, it prints hopefully-useful error message to stderr.
