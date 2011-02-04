@@ -11,19 +11,20 @@
 #import "CJSONDeserializer.h"
 #import "CJSONSerializer.h"
 
-/* options descriptor */
-static struct option longopts[] = {
-	{ "quiet",			no_argument,	NULL,	'q' },
-	{ "formatted",		no_argument,	NULL,	'f' },
-	{ "plist",			no_argument,	NULL,	'p' },
-	{ "force-array",	no_argument,	NULL,	'a' },
-	{ "force-dict",		no_argument,	NULL,	'd' },
-	{ NULL,				0,				NULL,	0 }
-};
-
 BOOL quiet = NO;
 BOOL formatted = NO;
 BOOL plist = NO;
+
+/* options descriptor */
+static struct option longopts[] = {
+	{ "quiet",			no_argument,	(int *)&quiet,		'q' },
+	{ "formatted",		no_argument,	(int *)&formatted,	'f' },
+	{ "plist",			no_argument,	(int *)&plist,		'p' },
+	{ "force-array",	no_argument,	NULL,				'a' },
+	{ "force-dict",		no_argument,	NULL,				'd' },
+	{ NULL,				0,				NULL,				0 }
+};
+
 
 typedef enum inputType {
 	inputTypeArray,
@@ -40,21 +41,6 @@ int main (int argc, const char * argv[]) {
 	
 	while ((ch = getopt_long(argc, (char * const *)argv, "qfpad", longopts, NULL)) != -1)
 		switch (ch) {
-			case 'q':
-			{
-				quiet = YES;
-				break;
-			}
-			case 'f':
-			{
-				formatted = YES;
-				break;
-			}
-			case 'p':
-			{
-				plist = YES;
-				break;
-			}
 			case 'a':
 			{
 				inputType = inputTypeArray;
