@@ -105,3 +105,9 @@ Returns 0 if the incoming JSON is valid, 1 if it is not.
 			title = "example glossary";
 		};
 	}
+
+### Using jsonlint with other tools
+
+Any command-line tool that writes to standard output can be trivially used with jsonlint, for example:
+
+	curl http://search.twitter.com/search.json?q=foo | jsonlint -p
