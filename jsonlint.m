@@ -84,8 +84,6 @@ int main (int argc, const char * argv[]) {
 				CJSONSerializer *serializer = [CJSONSerializer serializer];
 				serializer.format = formatted;
 				NSData *jsonData = [serializer serializeObject:json error:&serializeError];
-				[jsonData writeToFile:@"/tmp/junk.json" atomically:YES];
-				//		printf("%s\n", [[json description] UTF8String]);
 				NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 				printf("%s\n", [jsonString UTF8String]);
 				[jsonString release];
