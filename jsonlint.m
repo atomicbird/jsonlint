@@ -17,12 +17,12 @@ BOOL plist = NO;
 
 /* options descriptor */
 static struct option longopts[] = {
-	{ "quiet",			no_argument,	(int *)&quiet,		'q' },
-	{ "formatted",		no_argument,	(int *)&formatted,	'f' },
-	{ "plist",			no_argument,	(int *)&plist,		'p' },
-	{ "force-array",	no_argument,	NULL,				'a' },
-	{ "force-dict",		no_argument,	NULL,				'd' },
-	{ NULL,				0,				NULL,				0 }
+	{ "quiet",			no_argument,	NULL,	'q' },
+	{ "formatted",		no_argument,	NULL,	'f' },
+	{ "plist",			no_argument,	NULL,	'p' },
+	{ "force-array",	no_argument,	NULL,	'a' },
+	{ "force-dict",		no_argument,	NULL,	'd' },
+	{ NULL,				0,				NULL,	0 }
 };
 
 
@@ -49,6 +49,21 @@ int main (int argc, const char * argv[]) {
 			case 'd':
 			{
 				inputType = inputTypeDict;
+				break;
+			}
+			case 'f':
+			{
+				formatted = YES;
+				break;
+			}
+			case 'p':
+			{
+				plist = YES;
+				break;
+			}
+			case 'q':
+			{
+				quiet = YES;
 				break;
 			}
 		}
@@ -84,6 +99,8 @@ int main (int argc, const char * argv[]) {
 				CJSONSerializer *serializer = [CJSONSerializer serializer];
 				serializer.format = formatted;
 				NSData *jsonData = [serializer serializeObject:json error:&serializeError];
+				[jsonData writeToFile:@"/tmp/junk.json" atomically:YES];
+				//		printf("%s\n", [[json description] UTF8String]);
 				NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 				printf("%s\n", [jsonString UTF8String]);
 				[jsonString release];
