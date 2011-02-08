@@ -48,6 +48,9 @@ jsonlint reads from standard input and writes to standard output. Its simplest u
 	--force-dict
 > Force the incoming JSON to be treated as dictionary. If a dictionary is not found, an error is printed and 1 is returned, even if the incoming data is valid non-dictionary JSON.
 
+	-e
+	--encoding-search
+> Run through possible string encodings in the hope of finding one that matches incoming data. Useful if you're dealing with a server API that includes, for example, ISO-Latin-1 or MacOSRoman in JSON. This may result in successfully parsing JSON that violates RFC 4627 (http://www.ietf.org/rfc/rfc4627.txt), but sometimes such abominations are necessary.
 
 ## Return codes
 

@@ -14,6 +14,7 @@
 BOOL quiet = NO;
 BOOL formatted = NO;
 BOOL plist = NO;
+BOOL encodingSearch = NO;
 
 /* options descriptor */
 static struct option longopts[] = {
@@ -22,6 +23,7 @@ static struct option longopts[] = {
 	{ "plist",			no_argument,	NULL,	'p' },
 	{ "force-array",	no_argument,	NULL,	'a' },
 	{ "force-dict",		no_argument,	NULL,	'd' },
+	{ "encoding-search",	no_argument,	NULL,	'e' },
 	{ NULL,				0,				NULL,	0 }
 };
 
@@ -39,7 +41,7 @@ int main (int argc, const char * argv[]) {
 	
 	int ch;
 	
-	while ((ch = getopt_long(argc, (char * const *)argv, "qfpad", longopts, NULL)) != -1)
+	while ((ch = getopt_long(argc, (char * const *)argv, "adefpq", longopts, NULL)) != -1)
 		switch (ch) {
 			case 'a':
 			{
@@ -49,6 +51,11 @@ int main (int argc, const char * argv[]) {
 			case 'd':
 			{
 				inputType = inputTypeDict;
+				break;
+			}
+			case 'e':
+			{
+				encodingSearch = YES;
 				break;
 			}
 			case 'f':
@@ -71,22 +78,62 @@ int main (int argc, const char * argv[]) {
 	NSFileHandle *standardInput = [NSFileHandle fileHandleWithStandardInput];
 	NSData *inputData = [standardInput readDataToEndOfFile];
 	
-	NSError *deserializeError = nil;
-	id json;
-	switch (inputType) {
-		case inputTypeArray:
-		{
-			json = [[CJSONDeserializer deserializer] deserializeAsArray:inputData error:&deserializeError];
-			break;
-		}
-		case inputTypeDict:
-		{
-			json = [[CJSONDeserializer deserializer] deserializeAsDictionary:inputData error:&deserializeError];
-			break;
-		}
-		default:
-		{
-			json = [[CJSONDeserializer deserializer] deserialize:inputData error:&deserializeError];
+	NSError *deserializeError;
+	id json = nil;
+	CJSONDeserializer *deserializer = [CJSONDeserializer deserializer];
+
+	NSUInteger legalEncodings[] = { NSUTF8StringEncoding, 0 };
+	// Some options in allEncodings are probably unnecessary. On the other hand I would not have expected NSMacOSRomanStringEncoding in JSON, and I've seen it.
+	NSUInteger allEncodings[] = { 
+		NSUTF8StringEncoding,
+		NSNEXTSTEPStringEncoding,
+		NSJapaneseEUCStringEncoding,
+		NSISOLatin1StringEncoding, 
+		NSSymbolStringEncoding, 
+		NSNonLossyASCIIStringEncoding, 
+		NSShiftJISStringEncoding, 
+		NSISOLatin2StringEncoding, 
+		NSUnicodeStringEncoding, 
+		NSWindowsCP1251StringEncoding, 
+		NSWindowsCP1252StringEncoding, 
+		NSWindowsCP1253StringEncoding, 
+		NSWindowsCP1254StringEncoding, 
+		NSWindowsCP1250StringEncoding, 
+		NSISO2022JPStringEncoding, 
+		NSMacOSRomanStringEncoding, 
+		NSUTF16StringEncoding, 
+		NSUTF16BigEndianStringEncoding, 
+		NSUTF16LittleEndianStringEncoding, 
+		NSUTF32StringEncoding, 
+		NSUTF32BigEndianStringEncoding, 
+		NSUTF32LittleEndianStringEncoding, 
+		0 };
+	NSUInteger *currentEncoding;
+	if (encodingSearch) {
+		currentEncoding = allEncodings;
+	} else {
+		currentEncoding = legalEncodings;
+	}
+	while ((json == nil) && (*currentEncoding != 0)) {
+		deserializeError = nil;
+		deserializer.allowedEncoding = *currentEncoding;
+		currentEncoding++;
+
+		switch (inputType) {
+			case inputTypeArray:
+			{
+				json = [deserializer deserializeAsArray:inputData error:&deserializeError];
+				break;
+			}
+			case inputTypeDict:
+			{
+				json = [deserializer deserializeAsDictionary:inputData error:&deserializeError];
+				break;
+			}
+			default:
+			{
+				json = [deserializer deserialize:inputData error:&deserializeError];
+			}
 		}
 	}
 	
@@ -99,8 +146,6 @@ int main (int argc, const char * argv[]) {
 				CJSONSerializer *serializer = [CJSONSerializer serializer];
 				serializer.format = formatted;
 				NSData *jsonData = [serializer serializeObject:json error:&serializeError];
-				[jsonData writeToFile:@"/tmp/junk.json" atomically:YES];
-				//		printf("%s\n", [[json description] UTF8String]);
 				NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
 				printf("%s\n", [jsonString UTF8String]);
 				[jsonString release];
